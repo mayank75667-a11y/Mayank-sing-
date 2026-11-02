@@ -1,0 +1,302 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Dhaaga Store</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Hanken+Grotesk:wght@400;500;600&display=swap">
+<style>
+/* Layout: sticky header, hero strip, filter bar, product grid, right-side cart/checkout drawer.
+   Direction: indigo-dyed cloth and marigold, plain grotesque type, product tiles do the talking. */
+:root{
+  --bg:#f6f6fb; --surface:#ffffff; --fg:#14163a; --muted:#5d6086; --line:#dcdcec;
+  --ink:#1c1f55; --ink-fg:#ffffff; --accent:#f0a500; --accent-fg:#14163a; --good:#1f7a4d; --bad:#b3261e;
+  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1029; --surface:#181a3f; --fg:#eceefc; --muted:#a4a7cf; --line:#2c2f63;
+    --ink:#f0a500; --ink-fg:#14163a; --accent:#f0a500; --accent-fg:#14163a; --good:#5fd39a; --bad:#ff8f87;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1029; --surface:#181a3f; --fg:#eceefc; --muted:#a4a7cf; --line:#2c2f63;
+  --ink:#f0a500; --ink-fg:#14163a; --accent:#f0a500; --accent-fg:#14163a; --good:#5fd39a; --bad:#ff8f87;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 40px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1100px;margin:0 auto}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:12px}
+.logo{font-family:var(--display);font-weight:800;font-size:1.5rem;letter-spacing:-.02em}
+.logo span{color:var(--accent)}
+.cartbtn{display:flex;align-items:center;gap:8px;background:var(--ink);color:var(--ink-fg);border:0;border-radius:999px;padding:9px 16px;font-weight:600}
+.cartbtn b{background:var(--accent);color:var(--accent-fg);border-radius:999px;min-width:22px;height:22px;display:grid;place-items:center;font-size:.8rem;padding:0 6px}
+.promo{background:var(--ink);color:var(--ink-fg);text-align:center;font-size:.82rem;padding:6px 8px;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)))}
+.hero{padding-block:36px 24px;display:grid;gap:12px}
+.hero h1{font-size:clamp(2.1rem,7vw,3.8rem);line-height:1.02;letter-spacing:-.03em;font-weight:800;max-width:15ch}
+.hero p{color:var(--muted);max-width:46ch;margin:0}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding-block:12px 16px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;min-width:0}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--ink-fg);border-color:var(--ink)}
+select{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:7px 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:20px 16px}
+.card{display:flex;flex-direction:column;gap:10px;min-width:0}
+.art{position:relative;aspect-ratio:4/5;border-radius:14px;display:grid;place-items:center;overflow:hidden}
+.art svg{width:58%;height:auto}
+.tag{position:absolute;top:10px;left:10px;background:var(--accent);color:var(--accent-fg);font-size:.72rem;font-weight:700;border-radius:6px;padding:2px 8px;letter-spacing:.04em;text-transform:uppercase}
+.card h3{font-size:1.02rem;font-weight:700;letter-spacing:-.01em}
+.meta{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:.85rem}
+.price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.price strong{font-size:1.1rem;font-variant-numeric:tabular-nums}
+.price s{color:var(--muted);font-size:.85rem;font-variant-numeric:tabular-nums}
+.price em{color:var(--good);font-style:normal;font-size:.82rem;font-weight:600}
+.sizes{display:flex;gap:6px;flex-wrap:wrap}
+.sz{min-width:34px;height:30px;border:1px solid var(--line);background:var(--surface);border-radius:8px;font-size:.82rem;font-weight:600}
+.sz[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--ink-fg)}
+.add{background:var(--accent);color:var(--accent-fg);border:0;border-radius:10px;padding:10px;font-weight:700}
+.add:active{transform:scale(.98)}
+.empty{color:var(--muted);padding:40px 0}
+footer{color:var(--muted);font-size:.85rem;padding-top:36px;border-top:1px solid var(--line);margin-top:40px}
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(10,10,30,.55);z-index:40}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);background:var(--surface);z-index:50;display:flex;flex-direction:column;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-right:env(safe-area-inset-right,0px);border-left:1px solid var(--line)}
+.dh{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+.dh h2{font-size:1.25rem}
+.x{background:none;border:1px solid var(--line);border-radius:10px;width:36px;height:36px}
+.db{flex:1;overflow-y:auto;padding:16px 20px;min-height:0}
+.df{padding:16px 20px;border-top:1px solid var(--line);display:grid;gap:8px}
+.line{display:grid;grid-template-columns:64px 1fr;gap:12px;padding-block:12px;border-bottom:1px solid var(--line)}
+.line .th{width:64px;height:80px;border-radius:8px;display:grid;place-items:center}
+.line .th svg{width:60%}
+.line h4{margin:0;font-size:.95rem}
+.line small{color:var(--muted)}
+.qty{display:flex;align-items:center;gap:8px;margin-top:6px}
+.qty button{width:28px;height:28px;border:1px solid var(--line);background:var(--surface);border-radius:8px}
+.qty .rm{width:auto;padding:0 10px;margin-left:auto;color:var(--bad);border-color:transparent}
+.row{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}
+.row.total{font-weight:700;font-size:1.1rem}
+.coupon{display:flex;gap:8px}
+.coupon input{flex:1;min-width:0}
+input[type=text],input[type=tel],input[type=email]{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px}
+.btn{background:var(--ink);color:var(--ink-fg);border:0;border-radius:12px;padding:13px;font-weight:700}
+.btn.alt{background:none;color:var(--fg);border:1px solid var(--line)}
+.note{font-size:.82rem;color:var(--muted)}
+.msg{font-size:.85rem}
+.msg.ok{color:var(--good)} .msg.err{color:var(--bad)}
+.form{display:grid;gap:12px}
+.form label{display:grid;gap:4px;font-size:.85rem;font-weight:600}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pay{display:grid;gap:8px}
+.pay label{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:10px;font-weight:500}
+.done{text-align:center;display:grid;gap:10px;padding-block:30px}
+.done h2{font-size:1.6rem}
+.done .big{font-size:2.6rem}
+@media (max-width:420px){.two{grid-template-columns:1fr}.grid{gap:16px 12px}}
+@media (prefers-reduced-motion:no-preference){.card .art{transition:transform .25s}.card:hover .art{transform:translateY(-3px)}}
+</style>
+
+<header>
+  <div class="wrap bar">
+    <div class="logo">Dhaaga<span>.</span></div>
+    <button class="cartbtn" id="openCart" aria-label="Cart kholo">Cart <b id="count">0</b></button>
+  </div>
+</header>
+<div class="promo">Free delivery ₹1,999 se upar &nbsp;·&nbsp; Code <strong>FIRST10</strong> se 10% off</div>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>Roz ke kapde, achhe se bane.</h1>
+    <p>Cotton kurtas, linen shirts aur everyday basics. Size chuno, cart me daalo, aur order karo.</p>
+  </section>
+
+  <div class="filters">
+    <div class="chips" id="chips" role="group" aria-label="Category"></div>
+    <label class="note" for="sort">Sort&nbsp;
+      <select id="sort">
+        <option value="pop">Popular</option>
+        <option value="low">Price: low to high</option>
+        <option value="high">Price: high to low</option>
+        <option value="rate">Top rated</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <footer>Dhaaga demo store. Yahan koi asli payment nahi hota aur order sirf is browser me dikhta hai.</footer>
+</main>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Cart" hidden>
+  <div class="dh"><h2 id="dtitle">Your cart</h2><button class="x" id="closeCart" aria-label="Band karo">✕</button></div>
+  <div class="db" id="dbody"></div>
+  <div class="df" id="dfoot"></div>
+</aside>
+
+<script>
+const PRODUCTS=[
+ {id:1,name:"Jaipur Block-Print Kurta",cat:"Kurtas",price:1299,mrp:1799,color:"#2f4b9a",bg:"#dfe6f7",shape:"long",rate:4.6,n:412,tag:"Bestseller"},
+ {id:2,name:"Chikankari Cotton Kurta",cat:"Kurtas",price:1799,mrp:2399,color:"#f4efe6",bg:"#e8dfd0",shape:"long",rate:4.7,n:268},
+ {id:3,name:"Linen Casual Shirt",cat:"Shirts",price:1499,mrp:1999,color:"#7da08a",bg:"#dcebe2",shape:"shirt",rate:4.4,n:530},
+ {id:4,name:"Oxford Button-Down",cat:"Shirts",price:1199,mrp:1599,color:"#8fb4dd",bg:"#e0ecf8",shape:"shirt",rate:4.3,n:301},
+ {id:5,name:"Heavy Cotton Tee",cat:"T-Shirts",price:499,mrp:799,color:"#e0a21b",bg:"#f9ecc9",shape:"top",rate:4.5,n:1204,tag:"Sale"},
+ {id:6,name:"Oversized Graphic Tee",cat:"T-Shirts",price:699,mrp:999,color:"#2a2a38",bg:"#d8d8e3",shape:"top",rate:4.2,n:389},
+ {id:7,name:"Kalamkari Wrap Dress",cat:"Dresses",price:2199,mrp:2999,color:"#b04a3a",bg:"#f6dcd5",shape:"dress",rate:4.8,n:156,tag:"New"},
+ {id:8,name:"Mulmul Summer Dress",cat:"Dresses",price:1699,mrp:2299,color:"#d9a0b8",bg:"#f7e3ec",shape:"dress",rate:4.5,n:97},
+ {id:9,name:"Straight-Fit Chinos",cat:"Bottoms",price:1399,mrp:1899,color:"#a89877",bg:"#ece6d6",shape:"pants",rate:4.4,n:644},
+ {id:10,name:"Cotton Palazzo Pants",cat:"Bottoms",price:999,mrp:1399,color:"#3b7a78",bg:"#d7ecea",shape:"pants",rate:4.6,n:210},
+ {id:11,name:"Indigo Nehru Jacket",cat:"Jackets",price:2499,mrp:3499,color:"#1f2a6b",bg:"#d9ddf3",shape:"jacket",rate:4.7,n:88,tag:"New"},
+ {id:12,name:"Quilted Winter Jacket",cat:"Jackets",price:2999,mrp:3999,color:"#6b3f2a",bg:"#ecd9cf",shape:"jacket",rate:4.5,n:142}
+];
+const SIZES=["S","M","L","XL"];
+const SHAPES={
+ top:'<path d="M30 12 L10 28 L20 44 L28 38 L28 108 L72 108 L72 38 L80 44 L90 28 L70 12 Q50 24 30 12Z"/>',
+ shirt:'<path d="M30 12 L10 28 L20 44 L28 38 L28 108 L72 108 L72 38 L80 44 L90 28 L70 12 Q50 24 30 12Z"/><path d="M50 24 V108" stroke="rgba(0,0,0,.25)" stroke-width="1.6" fill="none"/>',
+ long:'<path d="M32 10 L12 26 L20 42 L28 36 L26 112 L74 112 L72 36 L80 42 L88 26 L68 10 Q50 22 32 10Z"/><path d="M50 22 V62" stroke="rgba(0,0,0,.25)" stroke-width="1.6" fill="none"/>',
+ dress:'<path d="M36 8 L30 40 L18 112 L82 112 L70 40 L64 8 Q50 20 36 8Z"/><path d="M30 40 H70" stroke="rgba(0,0,0,.25)" stroke-width="1.6" fill="none"/>',
+ pants:'<path d="M28 8 L72 8 L78 112 L54 112 L50 44 L46 112 L22 112Z"/>',
+ jacket:'<path d="M28 10 L6 30 L16 50 L24 42 L24 110 L76 110 L76 42 L84 50 L94 30 L72 10 L50 36Z"/><path d="M50 36 V110" stroke="rgba(0,0,0,.3)" stroke-width="1.8" fill="none"/>'
+};
+const art=(p,cls)=>`<svg viewBox="0 0 100 120" aria-hidden="true" fill="${p.color}" stroke="rgba(0,0,0,.18)" stroke-width="1">${SHAPES[p.shape]}</svg>`;
+const inr=n=>"₹"+n.toLocaleString("en-IN");
+const $=s=>document.querySelector(s);
+
+let cat="All", sort="pop", cart=[], view="cart", coupon=null, lastOrder=null;
+const picked={}; // product id -> size
+try{const s=localStorage.getItem("dhaaga-cart");if(s)cart=JSON.parse(s)||[]}catch(e){}
+const save=()=>{try{localStorage.setItem("dhaaga-cart",JSON.stringify(cart))}catch(e){}};
+
+function renderChips(){
+  const cats=["All",...new Set(PRODUCTS.map(p=>p.cat))];
+  $("#chips").innerHTML=cats.map(c=>`<button class="chip" aria-pressed="${c===cat}" data-cat="${c}">${c}</button>`).join("");
+}
+function renderGrid(){
+  let list=PRODUCTS.filter(p=>cat==="All"||p.cat===cat);
+  if(sort==="low")list.sort((a,b)=>a.price-b.price);
+  else if(sort==="high")list.sort((a,b)=>b.price-a.price);
+  else if(sort==="rate")list.sort((a,b)=>b.rate-a.rate);
+  else list.sort((a,b)=>b.n-a.n);
+  $("#grid").innerHTML=list.length?list.map(p=>{
+    const sz=picked[p.id]||"M", off=Math.round((1-p.price/p.mrp)*100);
+    return `<article class="card">
+      <div class="art" style="background:${p.bg}">${p.tag?`<span class="tag">${p.tag}</span>`:""}${art(p)}</div>
+      <div><h3>${p.name}</h3>
+        <div class="meta"><span>${p.cat}</span><span>★ ${p.rate.toFixed(1)} (${p.n})</span></div></div>
+      <div class="price"><strong>${inr(p.price)}</strong><s>${inr(p.mrp)}</s><em>${off}% off</em></div>
+      <div class="sizes" role="group" aria-label="Size">${SIZES.map(s=>`<button class="sz" data-size="${s}" data-id="${p.id}" aria-pressed="${s===sz}">${s}</button>`).join("")}</div>
+      <button class="add" data-add="${p.id}">Add to cart</button>
+    </article>`}).join(""):`<p class="empty">Is category me abhi kuch nahi hai.</p>`;
+}
+function totals(){
+  const sub=cart.reduce((a,l)=>a+l.price*l.q,0);
+  const disc=coupon?Math.round(sub*0.10):0;
+  const after=sub-disc;
+  const ship=after===0||after>=1999?0:99;
+  return {sub,disc,ship,total:after+ship};
+}
+function renderCount(){$("#count").textContent=cart.reduce((a,l)=>a+l.q,0)}
+function openDrawer(v){view=v||"cart";$("#scrim").hidden=false;$("#drawer").hidden=false;renderDrawer();$("#closeCart").focus()}
+function closeDrawer(){$("#scrim").hidden=true;$("#drawer").hidden=true;if(view==="done"){view="cart"}}
+function summaryRows(t){
+  return `<div class="row"><span>Subtotal</span><span>${inr(t.sub)}</span></div>
+  ${t.disc?`<div class="row"><span>FIRST10 discount</span><span>− ${inr(t.disc)}</span></div>`:""}
+  <div class="row"><span>Delivery</span><span>${t.ship?inr(t.ship):"Free"}</span></div>
+  <div class="row total"><span>Total</span><span>${inr(t.total)}</span></div>`;
+}
+function renderDrawer(){
+  const body=$("#dbody"), foot=$("#dfoot"), t=totals();
+  if(view==="cart"){
+    $("#dtitle").textContent="Your cart";
+    if(!cart.length){body.innerHTML=`<p class="empty">Cart khali hai. Kuch pasand aaye to add karo.</p>`;foot.innerHTML=`<button class="btn alt" data-close>Shopping jaari rakho</button>`;return}
+    body.innerHTML=cart.map((l,i)=>{const p=PRODUCTS.find(x=>x.id===l.id);return `<div class="line">
+      <div class="th" style="background:${p.bg}">${art(p)}</div>
+      <div><h4>${p.name}</h4><small>Size ${l.size} · ${inr(l.price)}</small>
+      <div class="qty"><button data-dec="${i}" aria-label="Kam karo">−</button><span>${l.q}</span><button data-inc="${i}" aria-label="Badhao">+</button><button class="rm" data-rm="${i}">Remove</button></div></div></div>`}).join("");
+    const need=1999-(t.sub-t.disc);
+    foot.innerHTML=`${need>0?`<p class="note">Free delivery ke liye ${inr(need)} aur add karo.</p>`:`<p class="note">Free delivery mil gayi.</p>`}
+      <form class="coupon" id="cform"><input type="text" id="ccode" placeholder="Coupon code" aria-label="Coupon code" value="${coupon||""}"><button class="btn alt" type="submit">Apply</button></form>
+      <div class="msg" id="cmsg">${coupon?'<span class="ok">FIRST10 lag gaya: 10% off.</span>':""}</div>
+      ${summaryRows(t)}
+      <button class="btn" data-checkout>Checkout</button>`;
+  } else if(view==="checkout"){
+    $("#dtitle").textContent="Delivery details";
+    body.innerHTML=`<form class="form" id="oform" novalidate>
+      <label for="fn">Poora naam<input type="text" id="fn" required autocomplete="name"></label>
+      <div class="two"><label for="ph">Phone<input type="tel" id="ph" inputmode="numeric" maxlength="10" placeholder="10 digit" required autocomplete="tel"></label>
+      <label for="em">Email<input type="email" id="em" required autocomplete="email"></label></div>
+      <label for="ad">Address<input type="text" id="ad" required autocomplete="street-address"></label>
+      <div class="two"><label for="ct">City<input type="text" id="ct" required autocomplete="address-level2"></label>
+      <label for="pin">PIN code<input type="text" id="pin" inputmode="numeric" maxlength="6" required autocomplete="postal-code"></label></div>
+      <div class="pay" role="radiogroup" aria-label="Payment">
+        <label><input type="radio" name="pay" value="UPI" checked> UPI</label>
+        <label><input type="radio" name="pay" value="Card"> Card</label>
+        <label><input type="radio" name="pay" value="COD"> Cash on delivery</label>
+      </div>
+      <p class="note">Demo store: koi asli payment nahi li jaati.</p>
+      <div class="msg err" id="emsg" role="alert"></div>
+    </form>`;
+    foot.innerHTML=`${summaryRows(t)}<button class="btn" id="placeBtn">Place order · ${inr(t.total)}</button><button class="btn alt" data-back>Cart par wapas</button>`;
+  } else {
+    $("#dtitle").textContent="Order placed";
+    body.innerHTML=`<div class="done"><div class="big">✓</div><h2>Shukriya, ${lastOrder.name.split(" ")[0]}!</h2>
+      <p>Order <strong>${lastOrder.id}</strong> ka total ${inr(lastOrder.total)} hai (${lastOrder.pay}). Hum ${lastOrder.city} ke liye 3 se 5 din me bhej denge.</p>
+      <p class="note">Ye demo order hai, isliye kuch asli nahi bheja jayega.</p></div>`;
+    foot.innerHTML=`<button class="btn" data-close>Aur shopping karo</button>`;
+  }
+}
+function place(){
+  const g=id=>$("#"+id).value.trim(), err=m=>{$("#emsg").textContent=m};
+  if(!g("fn"))return err("Naam daalo.");
+  if(!/^[6-9]\d{9}$/.test(g("ph")))return err("10 digit ka sahi phone number daalo.");
+  if(!/^\S+@\S+\.\S+$/.test(g("em")))return err("Sahi email daalo.");
+  if(!g("ad")||!g("ct"))return err("Address aur city daalo.");
+  if(!/^\d{6}$/.test(g("pin")))return err("6 digit ka PIN code daalo.");
+  const t=totals(), pay=document.querySelector('input[name=pay]:checked').value;
+  lastOrder={id:"DH"+Math.floor(100000+Math.random()*900000),name:g("fn"),city:g("ct"),pay,total:t.total};
+  cart=[];coupon=null;save();renderCount();view="done";renderDrawer();
+}
+document.addEventListener("click",e=>{
+  const t=e.target.closest("button,[data-close]"); if(!t&&e.target.id!=="scrim")return;
+  if(e.target.id==="scrim"||t.hasAttribute("data-close")||t.id==="closeCart")return closeDrawer();
+  if(t.id==="openCart")return openDrawer("cart");
+  if(t.dataset.cat){cat=t.dataset.cat;renderChips();return renderGrid()}
+  if(t.dataset.size){picked[t.dataset.id]=t.dataset.size;return renderGrid()}
+  if(t.dataset.add){
+    const p=PRODUCTS.find(x=>x.id==t.dataset.add), size=picked[p.id]||"M";
+    const ex=cart.find(l=>l.id===p.id&&l.size===size);
+    ex?ex.q++:cart.push({id:p.id,size,q:1,price:p.price});
+    save();renderCount();t.textContent="Added ✓";setTimeout(()=>{t.textContent="Add to cart"},900);return;
+  }
+  if(t.dataset.inc!==undefined){cart[+t.dataset.inc].q++}
+  else if(t.dataset.dec!==undefined){const l=cart[+t.dataset.dec];l.q--;if(l.q<1)cart.splice(+t.dataset.dec,1)}
+  else if(t.dataset.rm!==undefined){cart.splice(+t.dataset.rm,1)}
+  else if(t.hasAttribute("data-checkout")){view="checkout";return renderDrawer()}
+  else if(t.hasAttribute("data-back")){view="cart";return renderDrawer()}
+  else if(t.id==="placeBtn"){return place()}
+  else return;
+  save();renderCount();renderDrawer();
+});
+document.addEventListener("submit",e=>{
+  e.preventDefault();
+  if(e.target.id==="cform"){
+    const c=$("#ccode").value.trim().toUpperCase();
+    if(c==="FIRST10"){coupon="FIRST10";renderDrawer()}
+    else{$("#cmsg").innerHTML='<span class="err">Ye code sahi nahi hai. FIRST10 try karo.</span>'}
+  } else if(e.target.id==="oform"){place()}
+});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#drawer").hidden)closeDrawer()});
+$("#sort").addEventListener("change",e=>{sort=e.target.value;renderGrid()});
+renderChips();renderGrid();renderCount();
+</script>
+
+</body></html>
